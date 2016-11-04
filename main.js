@@ -4,6 +4,9 @@
 
 var express = require('express');
 var app = express();
+
+//added process.env.PORT because Hreoku dynamically allocates PORT
+app.set('port', (process.env.PORT || 5000))
 app.get('/', function(req, res) {
     res.sendfile("html/index.html")
 });
@@ -16,5 +19,6 @@ app.get('/sample', function(req, res){
     console.log(req.headers)
 });
 
-app.listen(3001);
-console.log('Listening on port 3001...');
+app.listen(app.get('port'), function(){
+    console.log('Listening on port', app.get('port'));
+});
