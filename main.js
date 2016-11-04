@@ -5,7 +5,7 @@
 var express = require('express');
 var app = express();
 app.get('/', function(req, res) {
-  res.send('Hello Seattle\n');
+    res.sendfile("html/index.html")
 });
 
 app.get('/sample', function(req, res){
