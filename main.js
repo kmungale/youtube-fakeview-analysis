@@ -9,7 +9,7 @@ var app = express();
 //added process.env.PORT because Hreoku dynamically allocates PORT
 app.set('port', (process.env.PORT || 5000));
 app.get('/', function(req, res) {
-    request('https://freegeoip.net/json/?callback=', function (error, response, body) {
+    request('http://ip-api.com/json?callback=', function (error, response, body) {
       if (!error && response.statusCode == 200) {
         console.log(response.body); // Show the HTML for the Google homepage.
       }
