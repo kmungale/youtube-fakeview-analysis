@@ -9,12 +9,14 @@ var app = express();
 //added process.env.PORT because Hreoku dynamically allocates PORT
 app.set('port', (process.env.PORT || 5000));
 app.get('/', function(req, res) {
-    request('http://ip-api.com/json?callback=', function (error, response, body) {
+    var search_ip_by_location = 'http://freegeoip.net/json/' + req.headers['x-forwarded-for']
+    request(search_ip_by_location, function (error, response, body) {
       if (!error && response.statusCode == 200) {
         console.log(response.body); // Show the HTML for the Google homepage.
       }
     });
-    console.log(req.headers);
+    //console.log(req.headers);
+    console.log(req.headers['x-forwarded-for']);
     res.sendfile("html/index.html")
 });
 
