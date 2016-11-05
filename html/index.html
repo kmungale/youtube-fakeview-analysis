@@ -3,8 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Sample</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 </head>
 <body>
+    <script>
+//        $.getJSON('/sample', function(data) {
+//            console.log(JSON.stringify(data, null, 2));
+//        });
+        $.ajax({
+            method: "POST",
+            url: "/trackMouseMotion",
+            data: {name: "kaustubh"}
+        }).done(function(data){
+            console.log(data);
+        }).fail(function(err){
+            console.log(err);
+        });
+    </script>
     This is a sample application I am working on
     adding some changes
 </body>

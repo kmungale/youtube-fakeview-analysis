@@ -16,7 +16,8 @@
     "url": "https://github.com/kmungale/youtube-fakeview-analysis/issues"
   },
   "dependencies": {
-    "express": "4.13.3"
+    "express": "4.13.3",
+    "request": "2.78.*"
   },
   "homepage": "https://github.com/kmungale/youtube-fakeview-analysis#readme"
 }
