@@ -23,12 +23,12 @@ MongoClient.connect(MONGO_URI, function(err, database) {
 
 app.set('port', (process.env.PORT || 5000));
 app.get('/', function(req, res) {
-    var search_ip_by_location = 'http://freegeoip.net/json/' + (req.headers['x-forwarded-for']);
+    var search_ip_by_location = 'http://freegeoip.net/json/' + (req.headers['x-forwarded-for'] || '63.152.57.234');
     var location;
     request(search_ip_by_location, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             console.log(response.body);
-            db.collection('LOCATION').insertOne(JSON.parse(response.body), function (err, doc) {
+            db.collection('location').insertOne(JSON.parse(response.body), function (err, doc) {
                 if(err) {
                     console.log(err)
                 }
