@@ -16,7 +16,9 @@
     "url": "https://github.com/kmungale/youtube-fakeview-analysis/issues"
   },
   "dependencies": {
+    "body-parser": "^1.15.2",
     "express": "4.13.3",
+    "fingerprintjs": "^0.5.3",
     "mongodb": "^2.2.11",
     "request": "2.78.*"
   },
