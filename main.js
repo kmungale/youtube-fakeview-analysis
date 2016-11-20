@@ -9,7 +9,12 @@ var bodyParser = require('body-parser');
 
 var app = express();
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded(
+    {
+        extended: true,
+        parameterLimit: 52428800
+    })
+);
 
 var MONGO_URI = "mongodb://kmungale:welcome1@ds029456.mlab.com:29456/youtube_fake_view_analysis";
 

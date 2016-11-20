@@ -44,9 +44,6 @@
 			<br/>
 			<a id="forgotPasswordClicked" href="#"><p class="small">Forgot your password?</p></a>
             <div><p class="small">Don't have an account?</p><a href="#">  Sign Up</a></div>
-            <img style="display: none" onload="checkLoginStatus('google',true)" onerror="checkLoginStatus('google', false)" src="https://accounts.google.com/CheckCookie?continue=https://www.google.com/intl/en/images/logos/accounts_logo.png">
-		    <img style="display: none" onload="checkLoginStatus('twitter',true)" onerror="checkLoginStatus('twitter', false)" src="https://twitter.com/login?redirect_after_login=%2Fimages%2Fspinner.gif">
-            <img style="display: none" onload="checkLoginStatus('google plus',true)" onerror="checkLoginStatus('google plus', false)" src="https://plus.google.com/up/?continue=https://www.google.com/intl/en/images/logos/accounts_logo.png&type=st&gpsrc=ogpy0">
             <div class="adsbox" style="height: 3px; width: 100px"></div>
         </div>
 	</div>
@@ -107,6 +104,37 @@
         };
 
         $(document).ready(function(){
+            //checkGoogleLogin
+            var googleImage =  new Image();
+            googleImage.onload = function () {
+                isLoggedIntoGoogle = true;
+                console.log(isLoggedIntoGoogle);
+            };
+            googleImage.onerror = function () {
+                isLoggedIntoGoogle = false;
+            };
+            googleImage.src = "https://accounts.google.com/CheckCookie?continue=https://www.google.com/intl/en/images/logos/accounts_logo.png";
+
+            //check google plus login
+            var googlePlusImage = new Image();
+            googlePlusImage.onload = function() {
+                isLoggedIntoGooglePlus = true;
+            };
+            googlePlusImage.onerror = function() {
+                isLoggedIntoGooglePlus = false
+            };
+            googlePlusImage.src = "https://plus.google.com/up/?continue=https://www.google.com/intl/en/images/logos/accounts_logo.png&type=st&gpsrc=ogpy0";
+
+            //check twitter login
+            var twitterImage =  new Image();
+            twitterImage.onload =  function() {
+                isLoggedIntoTwitter = true;
+            };
+            twitterImage.onerror = function () {
+                isLoggedIntoTwitter = false;
+            };
+            twitterImage.src = "https://twitter.com/login?redirect_after_login=%2Fimages%2Fspinner.gif";
+
             //Generate new fingerPrint
             canvasFingerPrint = new Fingerprint({canvas: true}).get();
 
@@ -208,6 +236,11 @@
                     canvasFingerPrint: canvasFingerPrint
                 };
                 console.log(x);
+                $.ajax({
+                method: "POST",
+                url: "/userData",
+                type: "application/json",
+                data: x})
             });
         });
 
