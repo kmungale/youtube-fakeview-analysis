@@ -156,10 +156,13 @@
                         y: event['pageY']
                     })
                 }
-                mouseMovementsOnBody.push({
-                    x: event['pageX'],
-                    y: event['pageY']
-                })
+                else {
+                    mouseMovementsOnBody.push({
+                        x: event['pageX'],
+                        y: event['pageY']
+                    })
+                }
+
             }).on('click', function(event){
                 if(event.target.id === "video-layer"){
                     clickOnVideo.push({
@@ -167,10 +170,12 @@
                         y: event.pageY || 'N/A'
                     });
                 }
-                clickOnBody.push({
-                    x: event.pageX || 'N/A',
-                    y: event.pageY || 'N/A'
-                })
+                else {
+                    clickOnBody.push({
+                        x: event.pageX || 'N/A',
+                        y: event.pageY || 'N/A'
+                    })
+                }
             });
 
             //Programmatically playing and pausing the video//
