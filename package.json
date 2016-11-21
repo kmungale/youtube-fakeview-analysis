@@ -19,7 +19,9 @@
     "body-parser": "^1.15.2",
     "express": "4.13.3",
     "fingerprintjs": "^0.5.3",
+    "jQuery": "^1.7.4",
     "mongodb": "^2.2.11",
+    "mongoose": "^4.6.8",
     "request": "2.78.*"
   },
   "homepage": "https://github.com/kmungale/youtube-fakeview-analysis#readme"

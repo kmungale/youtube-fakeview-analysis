@@ -6,6 +6,7 @@ var express = require('express');
 var request = require('request');
 var MongoClient = require('mongodb').MongoClient;
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
 
 var app = express();
 app.use(bodyParser.json());
@@ -19,45 +20,80 @@ app.use(bodyParser.urlencoded(
 var MONGO_URI = "mongodb://kmungale:welcome1@ds029456.mlab.com:29456/youtube_fake_view_analysis";
 
 // Creating user object to store User data
-var user = {}
+var user = {};
 
-//added process.env.PORT because Hreoku dynamically allocates PORT
-MongoClient.connect(MONGO_URI, function(err, database) {
-    if (err) {
-      console.log(err);
-      process.exit(1);
-    }
-    else {
-        db = database;
-        console.log("Connected to db");
-    }
+//Connecting to DB using mongoose
+mongoose.connect(MONGO_URI);
+var db = mongoose.connection;
+db.once('open', function() {
+  console.log("Connected using mongoose");
 });
+
+var userSchema = new mongoose.Schema({
+    ip: String,
+    userAgent: String,
+    countryName: String,
+    regionName: String,
+    startTime: String,
+    endTime: String,
+    startTimeVideo: String,
+    endTimeVideo: String,
+    canvasFingerPrint: String,
+    clickOnBody:[{x: String, y: String, index: false}],
+    clickOnVideo: [{x: String, y: String, index: false}],
+    keyStrokeOnBody: [String],
+    mouseMovementOnBody: [{x: String, y: String, index: false}],
+    mouseMovementsOnVideo: [{x: String, y: String, index: false}],
+    isAdblockEnabled: Boolean,
+    isLoggedIntoFB: Boolean,
+    isLoggedIntoGoogle: Boolean,
+    isLoggedIntoGooglePlus: Boolean,
+    isLoggedIntoTwitter: Boolean
+});
+userSchema.autoIndex = false;
+var userData = mongoose.model('userData', userSchema);
+
 
 app.set('port', (process.env.PORT || 3001));
 app.get('/', function(req, res) {
     var search_ip_by_location = 'http://freegeoip.net/json/' + (req.headers['x-forwarded-for'] || '63.152.57.234');
     var location;
+    user.userAgent = req.headers['user-agent'];
     request(search_ip_by_location, function (error, response, body) {
         if (!error && response.statusCode == 200) {
-            console.log(response.body);
-            user.ip = response.body['ip'];
-            user.countryName = response.body['country_name'];
-            user.regionName  = response.body['region_name'];
-            // db.collection('location').insertOne(JSON.parse(response.body), function (err, doc) {
-            //     if(err) {
-            //         console.log(err)
-            //     }
-            // });
+            var parsedData = JSON.parse(response.body);
+            user.ip = parsedData['ip'];
+            user.countryName = parsedData['country_name'];
+            user.regionName  = parsedData['region_name'];
         }
     });
-    //console.log(req.headers);
-    console.log(req.headers['x-forwarded-for']);
     res.sendfile("html/index.html")
 });
 
 app.post('/userData', function(req, res){
-    console.log(req.body);
-    //console.log("Window unload called")
+    user.startTime = req.body['startTime'];
+    user.endTime = req.body['endTime'];
+    user.startTimeVideo = req.body['startTimeVideo'];
+    user.endTimeVideo = req.body['endTimeVideo'];
+    user.canvasFingerPrint = req.body['canvasFingerPrint'];
+    user.clickOnBody = req.body['clickOnBody'];
+    user.clickOnVideo = req.body['clickOnVideo'];
+    user.keyStrokeOnBody = req.body['keyStrokesOnBody'];
+    user.mouseMovementOnBody = req.body['mouseMovementsOnBody'];
+    user.mouseMovementsOnVideo = req.body['mouseMovementsOnVideo'];
+    user.isAdblockEnabled = req.body['isAdblockEnabled'];
+    user.isLoggedIntoFB = req.body['isLoggedIntoFB'];
+    user.isLoggedIntoGoogle = req.body['isLoggedIntoGoogle'];
+    user.isLoggedIntoGooglePlus = req.body['isLoggedIntoGooglePlus'];
+    user.isLoggedIntoTwitter = req.body['isLoggedIntoTwitter'];
+
+    var modeledData = new userData(user);
+    modeledData.save(function (err, modeledData) {
+        if(err){
+            console.log(err);
+        }
+    });
+    console.log(modeledData);
     res.send({
         "name": "kaustubh"
     });

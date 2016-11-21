@@ -56,9 +56,9 @@
         var mouseMovementsOnBody = [];
         var keyStrokesOnBody = [];
         var mouseMovementsOnVideo = [];
-        var keyStrokesOnVideo = [];
         var clickOnBody = [];
         var clickOnVideo = [];
+        var isLoggedIntoFB;
         var isLoggedIntoGoogle;
         var isLoggedIntoTwitter;
         var isLoggedIntoGooglePlus;
@@ -68,19 +68,18 @@
         //checking facebook login
         window.fbAsyncInit = function() {
             FB.init({
-              appId      : '1830859327185843',
+              appId      : '1315616525156836',
               xfbml      : true,
-              version    : 'v2.8',
-              oauth      : true
+              version    : 'v2.8'
             });
             FB.getLoginStatus(function(response){
-			if (response.status != "unknown")
-			{
-				console.log("true");
-			}else{
-				console.log("true");
-			}
-		});
+                if (response.status != "unknown")
+                {
+                    isLoggedIntoFB = true
+                }else{
+                    isLoggedIntoFB = false
+                }
+		    });
         };
         (function(d, s, id){
             var js, fjs = d.getElementsByTagName(s)[0];
@@ -89,19 +88,6 @@
             js.src = "//connect.facebook.net/en_US/sdk.js";
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));
-
-        //check google, twitter, google-plus login
-        var checkLoginStatus = function (app, isLoggedIn) {
-            if(app === 'google') {
-                isLoggedIntoGoogle = isLoggedIn
-            }
-            if(app === 'twitter') {
-                isLoggedIntoTwitter = isLoggedIn
-            }
-            if(app === 'google plus') {
-                isLoggedIntoGooglePlus = isLoggedIn
-            }
-        };
 
         //Programmatically embed the youtube video
         var tag = document.createElement('script');
@@ -124,7 +110,6 @@
             var googleImage =  new Image();
             googleImage.onload = function () {
                 isLoggedIntoGoogle = true;
-                console.log(isLoggedIntoGoogle);
             };
             googleImage.onerror = function () {
                 isLoggedIntoGoogle = false;
@@ -213,58 +198,32 @@
             $(window).on('beforeunload', function(){
                 var endTime = Date.now();
                 $.ajax({
-                method: "POST",
-                url: "/userData",
-                data: {
-                    startTime: startTime,
-                    endTime: endTime,
-                    startTimeVideo: startTimeVideo,
-                    endTimeVideo: endTimeVideo || endTime,
-                    clickOnVideo: clickOnVideo,
-                    clickOnBody: clickOnBody,
-                    keyStrokeOnBody: keyStrokesOnBody,
-                    mouseMovementsOnBody: mouseMovementsOnBody,
-                    mouseMovementsOnVideo: mouseMovementsOnVideo,
-                    isLoggedIntoGoogle: isLoggedIntoGoogle,
-                    isLoggedIntoGooglePlus: isLoggedIntoGooglePlus,
-                    isLoggedIntoTwitter: isLoggedIntoTwitter,
-                    isAdblockEnabled: isAdblockEnabled,
-                    canvasFingerPrint: canvasFingerPrint
-                }
+                    method: "POST",
+                    url: "/userData",
+                    data: {
+                        startTime: startTime,
+                        endTime: endTime,
+                        startTimeVideo: startTimeVideo,
+                        endTimeVideo: endTimeVideo || endTime,
+                        clickOnVideo: clickOnVideo,
+                        clickOnBody: clickOnBody,
+                        keyStrokeOnBody: keyStrokesOnBody,
+                        mouseMovementsOnBody: mouseMovementsOnBody,
+                        mouseMovementsOnVideo: mouseMovementsOnVideo,
+                        isLoggedIntoFB: isLoggedIntoFB,
+                        isLoggedIntoGoogle: isLoggedIntoGoogle,
+                        isLoggedIntoGooglePlus: isLoggedIntoGooglePlus,
+                        isLoggedIntoTwitter: isLoggedIntoTwitter,
+                        isAdblockEnabled: isAdblockEnabled,
+                        canvasFingerPrint: canvasFingerPrint
+                    }
                 }).done(function(data){
                     console.log(data);
                 }).fail(function(err){
                     console.log(err);
                 });
             });
-
-            $("#submit").click(function(){
-                var endTime = Date.now();
-                var x = {
-                    startTime: startTime,
-                    endTime: endTime,
-                    startTimeVideo: startTimeVideo,
-                    endTimeVideo: endTimeVideo || endTime,
-                    clickOnVideo: clickOnVideo,
-                    clickOnBody: clickOnBody,
-                    keyStrokeOnBody: keyStrokesOnBody,
-                    mouseMovementsOnBody: mouseMovementsOnBody,
-                    mouseMovementsOnVideo: mouseMovementsOnVideo,
-                    isLoggedIntoGoogle: isLoggedIntoGoogle,
-                    isLoggedIntoGooglePlus: isLoggedIntoGooglePlus,
-                    isLoggedIntoTwitter: isLoggedIntoTwitter,
-                    isAdblockEnabled: isAdblockEnabled,
-                    canvasFingerPrint: canvasFingerPrint
-                };
-                console.log(x);
-                $.ajax({
-                method: "POST",
-                url: "/userData",
-                type: "application/json",
-                data: x})
-            });
         });
-
 
     </script>
     <div id ="video-layer">
