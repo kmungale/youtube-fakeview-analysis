@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Youtube Video</title>
-    <script src="https://www.youtube.com/iframe_api"></script>
+    <!--<script src="https://www.youtube.com/iframe_api"></script>-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.16.0/moment.min.js"></script>
     <script src="../node_modules/fingerprintjs/fingerprint.js"></script>
@@ -102,6 +102,22 @@
                 isLoggedIntoGooglePlus = isLoggedIn
             }
         };
+
+        //Programmatically embed the youtube video
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        var player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('video-player', {
+                playerVars: {'controls': 0 },
+                height: '390',
+                width: '640',
+                videoId: 'M7lc1UVf-VE'
+            });
+        }
 
         $(document).ready(function(){
             //checkGoogleLogin
@@ -249,15 +265,7 @@
             });
         });
 
-        var player;
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('video-player', {
-                playerVars: {'controls': 0 },
-                height: '390',
-                width: '640',
-                videoId: 'M7lc1UVf-VE'
-            });
-        }
+
     </script>
     <div id ="video-layer">
 
