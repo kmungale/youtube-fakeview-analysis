@@ -165,3 +165,20 @@ p.small {
     position: absolute;
 	cursor: pointer;
 }
+.site-header {
+	background-color: #665851;
+	width: 100%;
+	height: 35px;
+}
+
+.common {
+	color: #ffffff;
+    float: left;
+    margin-left: 70px;
+    margin-top: 7px;
+	cursor: pointer;
+}
+
+.promotion {
+	color: #fff;
+}

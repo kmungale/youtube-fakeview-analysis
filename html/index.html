@@ -24,8 +24,15 @@
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
+    <div class="site-header">
+        <div class="common home">Home</div>
+        <div class="common services">Services</div>
+        <div class="common about">About</div>
+        <div class="common contact">Contact</div>
+    </div>
     <div class="container">
 		<div class="top">
+            <!--<div class="hidden">- because don't think of your website as a self-promotion machine. Think of it as a self-inventive machine</div>-->
 			<h1 id="title" class="hidden"><span id="logo"></span></h1>
 		</div>
 		<div class="login-box animated fadeInUp">
@@ -48,6 +55,9 @@
         </div>
 	</div>
     <div id="video-player"></div>
+    <div id ="video-layer">
+
+    </div>
     <script>
         var startStop = true;
         var startTime = Date.now();
@@ -101,7 +111,7 @@
                 playerVars: {'controls': 0 },
                 height: '390',
                 width: '640',
-                videoId: 'M7lc1UVf-VE'
+                videoId: 'e4PmnOsikkA'
             });
         }
 
@@ -227,8 +237,6 @@
         });
 
     </script>
-    <div id ="video-layer">
 
-    </div>
 </body>
 </html>
