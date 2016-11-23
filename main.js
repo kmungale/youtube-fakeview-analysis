@@ -61,6 +61,7 @@ app.get('/', function(req, res) {
     user.userAgent = req.headers['user-agent'];
     request(search_ip_by_location, function (error, response, body) {
         if (!error && response.statusCode == 200) {
+            console.log(body);
             var parsedData = JSON.parse(response.body);
             user.ip = parsedData['ip'];
             user.countryName = parsedData['country_name'];
