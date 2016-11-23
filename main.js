@@ -93,7 +93,9 @@ app.post('/userData', function(req, res){
     user.isLoggedIntoGooglePlus = req.body['isLoggedIntoGooglePlus'];
     user.isLoggedIntoTwitter = req.body['isLoggedIntoTwitter'];
     user.timeOut = req.body['timeOut'];
-    console.log(req['headers']);
+    if(!user.ip) {
+        user.ip = req.headers['x-forwarded-for'];
+    }
 
     var modeledData = new userData(user);
     modeledData.save(function (err, modeledData) {
