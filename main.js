@@ -52,7 +52,8 @@ var userSchema = new mongoose.Schema({
     isLoggedIntoFB: Boolean,
     isLoggedIntoGoogle: Boolean,
     isLoggedIntoGooglePlus: Boolean,
-    isLoggedIntoTwitter: Boolean
+    isLoggedIntoTwitter: Boolean,
+    timeOut: Boolean
 });
 userSchema.autoIndex = false;
 var userData = mongoose.model('userData', userSchema);
@@ -91,6 +92,8 @@ app.post('/userData', function(req, res){
     user.isLoggedIntoGoogle = req.body['isLoggedIntoGoogle'];
     user.isLoggedIntoGooglePlus = req.body['isLoggedIntoGooglePlus'];
     user.isLoggedIntoTwitter = req.body['isLoggedIntoTwitter'];
+    user.timeOut = req.body['timeOut'];
+    console.log(req['headers']);
 
     var modeledData = new userData(user);
     modeledData.save(function (err, modeledData) {

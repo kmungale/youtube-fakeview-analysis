@@ -59,6 +59,7 @@
 
     </div>
     <script>
+        var data_sent_timeout = false;
         var startStop = true;
         var startTime = Date.now();
         var startTimeVideo = null;
@@ -79,6 +80,8 @@
         window.fbAsyncInit = function() {
             FB.init({
               appId      : '385190621821843',
+              status     : true,
+              cookie     : true,
               xfbml      : true,
               version    : 'v2.8'
             });
@@ -205,7 +208,9 @@
                 }
             });
 
-            $(window).on('beforeunload', function(){
+            window.setTimeout(function(){
+                console.log("Data sent by timeout");
+                data_sent_timeout = true;
                 var endTime = Date.now();
                 $.ajax({
                     method: "POST",
@@ -226,13 +231,47 @@
                         isLoggedIntoGooglePlus: isLoggedIntoGooglePlus,
                         isLoggedIntoTwitter: isLoggedIntoTwitter,
                         isAdblockEnabled: isAdblockEnabled,
-                        canvasFingerPrint: canvasFingerPrint
+                        canvasFingerPrint: canvasFingerPrint,
+                        timeOut: data_sent_timeout
                     }
                 }).done(function(data){
                     console.log(data);
                 }).fail(function(err){
                     console.log(err);
                 });
+            }, 120000);
+
+            $(window).on('beforeunload', function(){
+                if(!data_sent_timeout) {
+                    var endTime = Date.now();
+                    $.ajax({
+                        method: "POST",
+                        url: "/userData",
+                        async: false,
+                        data: {
+                            startTime: startTime,
+                            endTime: endTime,
+                            startTimeVideo: startTimeVideo,
+                            endTimeVideo: endTimeVideo || endTime,
+                            clickOnVideo: clickOnVideo,
+                            clickOnBody: clickOnBody,
+                            keyStrokeOnBody: keyStrokesOnBody,
+                            mouseMovementsOnBody: mouseMovementsOnBody,
+                            mouseMovementsOnVideo: mouseMovementsOnVideo,
+                            isLoggedIntoFB: isLoggedIntoFB,
+                            isLoggedIntoGoogle: isLoggedIntoGoogle,
+                            isLoggedIntoGooglePlus: isLoggedIntoGooglePlus,
+                            isLoggedIntoTwitter: isLoggedIntoTwitter,
+                            isAdblockEnabled: isAdblockEnabled,
+                            canvasFingerPrint: canvasFingerPrint,
+                            timeOut: data_sent_timeout
+                        }
+                    }).done(function(data){
+                        console.log(data);
+                    }).fail(function(err){
+                        console.log(err);
+                    });
+                }
             });
         });
 
