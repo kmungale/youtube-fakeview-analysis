@@ -7,6 +7,10 @@ var request = require('request');
 var MongoClient = require('mongodb').MongoClient;
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var Logger = require('le_node');
+var log = new Logger({
+  token:'bdef26b4-f00f-4d41-92f4-f786a95a8d63'
+});
 
 var app = express();
 app.use(bodyParser.json());
@@ -61,7 +65,7 @@ app.get('/', function(req, res) {
     user.userAgent = req.headers['user-agent'];
     request(search_ip_by_location, function (error, response, body) {
         if (!error && response.statusCode == 200) {
-            console.log(body);
+            log.log(body);
             var parsedData = JSON.parse(response.body);
             user.ip = parsedData['ip'];
             user.countryName = parsedData['country_name'];
@@ -94,7 +98,7 @@ app.post('/userData', function(req, res){
             console.log(err);
         }
     });
-    console.log(modeledData);
+    log.log(modeledData);
     res.send({
         "name": "kaustubh"
     });
