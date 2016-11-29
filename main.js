@@ -96,6 +96,9 @@ app.post('/userData', function(req, res){
     if(!user.ip) {
         user.ip = req.headers['x-forwarded-for'];
     }
+    if(!user.userAgent) {
+        user.userAgent = req.headers['user-agent'];
+    }
 
     var modeledData = new userData(user);
     modeledData.save(function (err, modeledData) {
