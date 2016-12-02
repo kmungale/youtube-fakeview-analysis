@@ -67,7 +67,7 @@ app.get('/', function(req, res) {
     var location;
     user.userAgent = req.headers['user-agent'];
     user.referer = req.headers['referer'];
-    user.method = req.headers['method'];
+    user.method = req.method;
     log.log(req.headers);
     //console.log(req);
     request(search_ip_by_location, function (error, response, body) {
