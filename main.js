@@ -64,6 +64,7 @@ app.get('/', function(req, res) {
     var search_ip_by_location = 'http://freegeoip.net/json/' + (req.headers['x-forwarded-for'] || '63.152.57.234');
     var location;
     user.userAgent = req.headers['user-agent'];
+    log.log(req.headers);
     request(search_ip_by_location, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             log.log(body);
