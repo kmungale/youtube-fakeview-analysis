@@ -37,6 +37,7 @@ var userSchema = new mongoose.Schema({
     ip: String,
     userAgent: String,
     referer: String,
+    method: String,
     countryName: String,
     regionName: String,
     startTime: String,
@@ -66,8 +67,9 @@ app.get('/', function(req, res) {
     var location;
     user.userAgent = req.headers['user-agent'];
     user.referer = req.headers['referer'];
+    user.method = req.headers['method'];
     log.log(req.headers);
-    console.log(req);
+    //console.log(req);
     request(search_ip_by_location, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             log.log(body);
