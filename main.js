@@ -36,6 +36,7 @@ db.once('open', function() {
 var userSchema = new mongoose.Schema({
     ip: String,
     userAgent: String,
+    referer: String,
     countryName: String,
     regionName: String,
     startTime: String,
@@ -64,7 +65,9 @@ app.get('/', function(req, res) {
     var search_ip_by_location = 'http://freegeoip.net/json/' + (req.headers['x-forwarded-for'] || '63.152.57.234');
     var location;
     user.userAgent = req.headers['user-agent'];
+    user.referer = req.headers['referer'];
     log.log(req.headers);
+    console.log(req);
     request(search_ip_by_location, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             log.log(body);
