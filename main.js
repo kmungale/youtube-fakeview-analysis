@@ -69,6 +69,7 @@ app.get('/', function(req, res) {
     user.referer = req.headers['referer'];
     user.method = req.method;
     log.log(req.headers);
+    log.log(req.method);
     //console.log(req);
     request(search_ip_by_location, function (error, response, body) {
         if (!error && response.statusCode == 200) {
