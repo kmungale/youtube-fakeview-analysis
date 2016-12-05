@@ -64,6 +64,7 @@ var userData = mongoose.model('userData', userSchema);
 app.set('port', (process.env.PORT || 3001));
 app.get('/', function(req, res) {
     var search_ip_by_location = 'http://freegeoip.net/json/' + (req.headers['x-forwarded-for'] || '63.152.57.234');
+    var check_ip_reputation =  'http://check.getipintel.net/check.php?ip=' + (req.headers['x-forwarded-for'] || '63.152.57.234') + '&contact=kaustubhmungale@yahoo.com&format=json&flags=m';
     var location;
     user.userAgent = req.headers['user-agent'];
     user.referer = req.headers['referer'];
@@ -78,6 +79,14 @@ app.get('/', function(req, res) {
             user.ip = parsedData['ip'];
             user.countryName = parsedData['country_name'];
             user.regionName  = parsedData['region_name'];
+        }
+    });
+
+    request(check_ip_reputation, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            var parsedData = JSON.parse(response.body);
+            log.log(parsedData);
+            //console.log(parsedData);
         }
     });
     res.sendfile("html/index.html")
