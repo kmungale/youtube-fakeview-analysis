@@ -71,7 +71,7 @@ app.get('/', function(req, res) {
     user.method = req.method;
     log.log(req.headers);
     log.log(req.method);
-    console.log(req);
+    console.log(res);
     request(search_ip_by_location, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             log.log(body);
